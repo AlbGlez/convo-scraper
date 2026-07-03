@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monitor de Convocatorias · Ciencia y Tecnología</title>
+<style>
+  :root {
+    --bg: #f2f0eb;
+    --surface: #ffffff;
+    --ink: #1a1e24;
+    --ink-soft: #5a6470;
+    --line: #d9d5cc;
+    --federal: #1b3a6b;      /* azul institucional: nivel federal */
+    --federal-soft: #e8eef7;
+    --estatal: #1f6b4a;      /* verde: nivel estatal (Morelos) */
+    --estatal-soft: #e6f2ec;
+    --star: #c8891b;         /* ámbar: relevante */
+    --urgent: #b23b3b;       /* rojo: cierra pronto */
+    --radius: 10px;
+    --mono: "SFMono-Regular", ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
+    --sans: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* ---- Encabezado ---- */
+  header {
+    padding: 40px 0 24px;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 0;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    max-width: 20ch;
+  }
+  .updated {
+    margin-top: 14px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+  .updated .dot { color: var(--estatal); }
+
+  /* ---- Pestañas ---- */
+  .tabs {
+    display: flex;
+    gap: 0;
+    margin-top: 28px;
+    border-bottom: 1px solid var(--line);
+  }
+  .tab {
+    appearance: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    padding: 12px 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    transition: color 0.15s;
+  }
+  .tab:hover { color: var(--ink); }
+  .tab .count {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    background: var(--line);
+    color: var(--ink);
+    padding: 1px 8px;
+    border-radius: 20px;
+  }
+  .tab[aria-selected="true"] { color: var(--ink); }
+  .tab[aria-selected="true"]::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -1px;
+    height: 3px;
+  }
+  .tab[data-level="federal"][aria-selected="true"]::after { background: var(--federal); }
+  .tab[data-level="estatal"][aria-selected="true"]::after { background: var(--estatal); }
+  .tab[data-level="federal"][aria-selected="true"] .count { background: var(--federal-soft); color: var(--federal); }
+  .tab[data-level="estatal"][aria-selected="true"] .count { background: var(--estatal-soft); color: var(--estatal); }
+
+  /* ---- Controles ---- */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    padding: 20px 0 8px;
+  }
+  .search {
+    flex: 1 1 260px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 9px 13px;
+  }
+  .search:focus-within { border-color: var(--ink-soft); }
+  .search svg { flex-shrink: 0; color: var(--ink-soft); }
+  .search input {
+    border: none;
+    outline: none;
+    font-family: var(--sans);
+    font-size: 14.5px;
+    width: 100%;
+    background: none;
+    color: var(--ink);
+  }
+  .toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    user-select: none;
+    padding: 9px 14px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .toggle input { accent-color: var(--star); width: 16px; height: 16px; cursor: pointer; }
+  .toggle.active { color: var(--ink); border-color: var(--star); }
+
+  .summary {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    padding: 6px 0 18px;
+  }
+
+  /* ---- Lista de convocatorias ---- */
+  .list { display: flex; flex-direction: column; gap: 10px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+  }
+  .card:hover {
+    box-shadow: 0 4px 18px rgba(26,30,36,0.08);
+    transform: translateY(-1px);
+  }
+  .panel[data-level="federal"] .card.relevant { border-left-color: var(--federal); }
+  .panel[data-level="estatal"] .card.relevant { border-left-color: var(--estatal); }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+  .card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+  .card h3 a { color: var(--ink); text-decoration: none; }
+  .card h3 a:hover { text-decoration: underline; text-underline-offset: 2px; }
+  .star {
+    flex-shrink: 0;
+    color: var(--star);
+    font-size: 17px;
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+  .badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    padding: 2px 9px;
+    border-radius: 20px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+  }
+  .panel[data-level="federal"] .badge.src { background: var(--federal-soft); border-color: transparent; color: var(--federal); }
+  .panel[data-level="estatal"] .badge.src { background: var(--estatal-soft); border-color: transparent; color: var(--estatal); }
+  .cierre { font-family: var(--mono); font-size: 12px; }
+  .cierre.soon { color: var(--urgent); font-weight: 600; }
+  .kw { font-style: italic; }
+
+  .empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--ink-soft);
+  }
+  .empty strong { display: block; color: var(--ink); font-size: 16px; margin-bottom: 6px; }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  footer {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  footer a { color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Monitor de financiamiento · Ciencia y Tecnología</div>
+    <h1>Convocatorias abiertas, en un solo lugar</h1>
+    <div class="updated" id="updated">Cargando datos…</div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Nivel de gobierno">
+    <button class="tab" data-level="federal" role="tab" aria-selected="true" id="tab-federal">
+      Federal · SECIHTI <span class="count" id="count-federal">0</span>
+    </button>
+    <button class="tab" data-level="estatal" role="tab" aria-selected="false" id="tab-estatal">
+      Estatal · Morelos <span class="count" id="count-estatal">0</span>
+    </button>
+  </nav>
+
+  <div class="controls">
+    <label class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="search" id="search" placeholder="Buscar por título, tema o palabra clave…" autocomplete="off">
+    </label>
+    <label class="toggle" id="toggle-rel">
+      <input type="checkbox" id="only-relevant">
+      Solo relevantes ★
+    </label>
+  </div>
+
+  <div class="summary" id="summary"></div>
+
+  <section class="panel active" data-level="federal" id="panel-federal" role="tabpanel" aria-labelledby="tab-federal">
+    <div class="list" id="list-federal"></div>
+  </section>
+  <section class="panel" data-level="estatal" id="panel-estatal" role="tabpanel" aria-labelledby="tab-estatal">
+    <div class="list" id="list-estatal"></div>
+  </section>
+
+  <footer>
+    Datos recolectados automáticamente de SECIHTI (federal) y de CCyTEM, IMTA y UTEZ (estatal).
+    Esta página es solo informativa; siempre verifica plazos y bases en la convocatoria oficial.
+    <br>Actualización periódica vía el monitor de convocatorias.
+  </footer>
+</div>
+
+<script>
+const MESES = {ene:0,feb:1,mar:2,abr:3,may:4,jun:5,jul:6,ago:7,sep:8,oct:9,nov:10,dic:11};
+let DATA = { federal: [], estatal: [] };
+let activeLevel = "federal";
+
+// parsea "10 Jul 2026" -> Date (o null)
+function parseCierre(s) {
+  if (!s) return null;
+  const m = s.toLowerCase().match(/(\d{1,2})\s+(\w{3})\w*\s+(20\d{2})/);
+  if (!m) return null;
+  const mes = MESES[m[2].slice(0,3)];
+  if (mes === undefined) return null;
+  return new Date(+m[3], mes, +m[1]);
+}
+
+function diasRestantes(fecha) {
+  if (!fecha) return null;
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  return Math.round((fecha - hoy) / 86400000);
+}
+
+function esc(s) {
+  const d = document.createElement("div");
+  d.textContent = s || "";
+  return d.innerHTML;
+}
+
+function cardHTML(item) {
+  const cierreDate = parseCierre(item.cierre);
+  const dias = diasRestantes(cierreDate);
+  let cierreHTML = "";
+  if (item.cierre) {
+    const soon = dias !== null && dias >= 0 && dias <= 14;
+    const txt = dias !== null && dias >= 0
+      ? `cierra ${esc(item.cierre)} · ${dias} día${dias===1?"":"s"}`
+      : `cierra ${esc(item.cierre)}`;
+    cierreHTML = `<span class="cierre ${soon?"soon":""}">${txt}</span>`;
+  }
+  const kw = item.keywords
+    ? `<span class="kw">${esc(item.keywords)}</span>` : "";
+  const star = item.relevante ? `<span class="star" title="Relevante para tu perfil">★</span>` : "";
+  return `
+    <article class="card ${item.relevante?"relevant":""}">
+      <div class="card-top">
+        <h3><a href="${esc(item.url)}" target="_blank" rel="noopener">${esc(item.titulo)}</a></h3>
+        ${star}
+      </div>
+      <div class="card-meta">
+        <span class="badge src">${esc(item.fuente)}</span>
+        ${cierreHTML}
+        ${kw}
+      </div>
+    </article>`;
+}
+
+function render() {
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  const onlyRel = document.getElementById("only-relevant").checked;
+
+  for (const level of ["federal", "estatal"]) {
+    let items = DATA[level] || [];
+    if (onlyRel) items = items.filter(x => x.relevante);
+    if (q) items = items.filter(x =>
+      (x.titulo + " " + x.fuente + " " + x.keywords + " " + x.categoria)
+        .toLowerCase().includes(q));
+
+    // ordenar: relevantes primero, luego por cierre más próximo
+    items.sort((a,b) => {
+      if (a.relevante !== b.relevante) return a.relevante ? -1 : 1;
+      const da = parseCierre(a.cierre), db = parseCierre(b.cierre);
+      if (da && db) return da - db;
+      if (da) return -1; if (db) return 1;
+      return 0;
+    });
+
+    const list = document.getElementById("list-" + level);
+    if (items.length === 0) {
+      list.innerHTML = `<div class="empty"><strong>Sin resultados</strong>
+        ${q || onlyRel ? "Prueba quitar filtros o cambiar la búsqueda." : "Aún no hay convocatorias en este nivel."}</div>`;
+    } else {
+      list.innerHTML = items.map(cardHTML).join("");
+    }
+
+    // contador de la pestaña muestra el total real (sin filtro de búsqueda)
+    const total = (DATA[level] || []).length;
+    document.getElementById("count-" + level).textContent = total;
+  }
+  updateSummary();
+}
+
+function updateSummary() {
+  const items = DATA[activeLevel] || [];
+  const rel = items.filter(x => x.relevante).length;
+  const nombre = activeLevel === "federal" ? "federales" : "estatales";
+  document.getElementById("summary").textContent =
+    `${items.length} convocatoria${items.length===1?"":"s"} ${nombre} · ${rel} relevante${rel===1?"":"s"} ★`;
+}
+
+function switchTab(level) {
+  activeLevel = level;
+  document.querySelectorAll(".tab").forEach(t =>
+    t.setAttribute("aria-selected", t.dataset.level === level));
+  document.querySelectorAll(".panel").forEach(p =>
+    p.classList.toggle("active", p.dataset.level === level));
+  updateSummary();
+}
+
+function tiempoRelativo(iso) {
+  if (!iso) return "";
+  const then = new Date(iso), now = new Date();
+  const h = Math.round((now - then) / 3600000);
+  if (h < 1) return "hace menos de una hora";
+  if (h < 24) return `hace ${h} hora${h===1?"":"s"}`;
+  const d = Math.round(h/24);
+  return `hace ${d} día${d===1?"":"s"}`;
+}
+
+async function load() {
+  try {
+    const res = await fetch("data.json?" + Date.now());
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const d = await res.json();
+    DATA.federal = d.federal || [];
+    DATA.estatal = d.estatal || [];
+    const rel = tiempoRelativo(d.generado);
+    if (d.generado) {
+      document.getElementById("updated").innerHTML =
+        `<span class="dot">●</span> Actualizado ${rel} · ` +
+        new Date(d.generado).toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"});
+    } else {
+      document.getElementById("updated").innerHTML =
+        `<span class="dot">●</span> Aún sin datos — corre el monitor con --once para llenarlo`;
+    }
+    render();
+  } catch (e) {
+    document.getElementById("updated").textContent =
+      "No se pudieron cargar los datos (data.json). Corre el monitor con --export-json.";
+    console.error(e);
+  }
+}
+
+document.querySelectorAll(".tab").forEach(t =>
+  t.addEventListener("click", () => switchTab(t.dataset.level)));
+document.getElementById("search").addEventListener("input", render);
+document.getElementById("only-relevant").addEventListener("change", e => {
+  document.getElementById("toggle-rel").classList.toggle("active", e.target.checked);
+  render();
+});
+load();
+</script>
+</body>
+</html>

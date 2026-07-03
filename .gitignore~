@@ -1,0 +1,21 @@
+# Base de datos local (el estado vive en tu PC, no en el repo)
+convocatorias.db
+
+# Config con posibles credenciales de correo — NO subir
+config.json
+config.json.bak
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Capturas / temporales
+preview_*.png
+
+# requirements
+requirements.txt
+
+# actualizar
+actualizar.*
