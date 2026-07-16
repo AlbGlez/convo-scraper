@@ -1,10 +1,10 @@
 {
-  "generado": "2026-07-16T12:00:30+00:00",
+  "generado": "2026-07-16T18:00:39+00:00",
   "totales": {
     "federal": 25,
-    "estatal": 7,
+    "estatal": 8,
     "federal_relevantes": 3,
-    "estatal_relevantes": 7
+    "estatal_relevantes": 8
   },
   "federal": [
     {
@@ -309,6 +309,18 @@
     }
   ],
   "estatal": [
+    {
+      "titulo": "Actualiza CEMITT calendario de convocatoria para impulsar soluciones científicas y tecnológicas •\tLa recepción y registro de proyectos iniciará el próximo 22 de julio de 2026 •\tLa convocatoria busca desarrollar soluciones estratégicas para atender necesidades prioritarias del estado July 16, 2026",
+      "fuente": "CCyTEM-noticias",
+      "url": "https://www.morelos.gob.mx/ultimas-noticias/actualiza-cemitt-calendario-de-convocatoria-para-impulsar-soluciones-cientificas-y-tecnologicas",
+      "categoria": "",
+      "periodo": "",
+      "estatus": "",
+      "cierre": "",
+      "keywords": "",
+      "relevante": true,
+      "visto": "2026-07-16T18:00:34+00:00"
+    },
     {
       "titulo": "Convocatorias vigentes",
       "fuente": "UTEZ-becas",
