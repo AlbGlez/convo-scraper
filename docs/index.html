@@ -355,9 +355,13 @@ function render() {
       (x.titulo + " " + x.fuente + " " + x.keywords + " " + x.categoria)
         .toLowerCase().includes(q));
 
-    // ordenar: relevantes primero, luego por cierre más próximo
+    // ordenar: relevantes primero, luego lo más recientemente detectado arriba
     items.sort((a,b) => {
       if (a.relevante !== b.relevante) return a.relevante ? -1 : 1;
+      // "visto" es un timestamp ISO (first_seen); más reciente = más arriba
+      const va = a.visto || "", vb = b.visto || "";
+      if (va !== vb) return vb.localeCompare(va);   // descendente
+      // desempate: si se vieron a la vez, el cierre más próximo primero
       const da = parseCierre(a.cierre), db = parseCierre(b.cierre);
       if (da && db) return da - db;
       if (da) return -1; if (db) return 1;
