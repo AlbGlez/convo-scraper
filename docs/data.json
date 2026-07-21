@@ -1,10 +1,10 @@
 {
-  "generado": "2026-07-20T18:00:30+00:00",
+  "generado": "2026-07-21T00:00:34+00:00",
   "totales": {
     "federal": 25,
-    "estatal": 8,
+    "estatal": 9,
     "federal_relevantes": 3,
-    "estatal_relevantes": 8
+    "estatal_relevantes": 9
   },
   "federal": [
     {
@@ -309,6 +309,18 @@
     }
   ],
   "estatal": [
+    {
+      "titulo": "Busca Morelos talento científico para resolver tres retos urgentes: agua, buen gobierno y ciberseguridad El CCyTEM, a través CeMITT, abre sus desafíos públicos a la comunidad científica y tecnológica •\tLa convocatoria “Soluciones Estratégicas para Morelos 2026” inicia registro el próximo 22 de julio",
+      "fuente": "CCyTEM-noticias",
+      "url": "https://www.morelos.gob.mx/ultimas-noticias/busca-morelos-talento-cientifico-para-resolver-tres-retos-urgentes-agua-buen-gobierno-y-ciberseguridad",
+      "categoria": "",
+      "periodo": "",
+      "estatus": "",
+      "cierre": "",
+      "keywords": "agua",
+      "relevante": true,
+      "visto": "2026-07-21T00:00:29+00:00"
+    },
     {
       "titulo": "Actualiza CEMITT calendario de convocatoria para impulsar soluciones científicas y tecnológicas •\tLa recepción y registro de proyectos iniciará el próximo 22 de julio de 2026 •\tLa convocatoria busca desarrollar soluciones estratégicas para atender necesidades prioritarias del estado July 16, 2026",
       "fuente": "CCyTEM-noticias",
