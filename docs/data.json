@@ -1,10 +1,10 @@
 {
-  "generado": "2026-07-22T18:00:36+00:00",
+  "generado": "2026-07-23T00:00:29+00:00",
   "totales": {
     "federal": 25,
-    "estatal": 9,
+    "estatal": 10,
     "federal_relevantes": 3,
-    "estatal_relevantes": 9
+    "estatal_relevantes": 10
   },
   "federal": [
     {
@@ -309,6 +309,18 @@
     }
   ],
   "estatal": [
+    {
+      "titulo": "Abre CEMITT registro de proyectos científicos para impulsar soluciones estratégicas en Morelos •\tEste 22 de julio inicia el registro de proyectos de la convocatoria \"Soluciones Estratégicas para Morelos con Enfoque Humanístico, Científico y Tecnológico 2026\" •\tUniversidades, centros de investigación",
+      "fuente": "CCyTEM-noticias",
+      "url": "https://www.morelos.gob.mx/ultimas-noticias/abre-cemitt-registro-de-proyectos-cientificos-para-impulsar-soluciones-estrategicas-en-morelos",
+      "categoria": "",
+      "periodo": "",
+      "estatus": "",
+      "cierre": "",
+      "keywords": "",
+      "relevante": true,
+      "visto": "2026-07-23T00:00:24+00:00"
+    },
     {
       "titulo": "Busca Morelos talento científico para resolver tres retos urgentes: agua, buen gobierno y ciberseguridad El CCyTEM, a través CeMITT, abre sus desafíos públicos a la comunidad científica y tecnológica •\tLa convocatoria “Soluciones Estratégicas para Morelos 2026” inicia registro el próximo 22 de julio",
       "fuente": "CCyTEM-noticias",
