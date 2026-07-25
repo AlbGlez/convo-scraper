@@ -1,7 +1,7 @@
 {
-  "generado": "2026-07-24T18:00:42+00:00",
+  "generado": "2026-07-25T00:00:38+00:00",
   "totales": {
-    "federal": 25,
+    "federal": 26,
     "estatal": 10,
     "federal_relevantes": 3,
     "estatal_relevantes": 10
@@ -42,6 +42,18 @@
       "keywords": "inteligencia artificial",
       "relevante": true,
       "visto": "2026-07-03T22:44:55+00:00"
+    },
+    {
+      "titulo": "Convocatorias 2026 Becas para Estancias Técnicas en Japón: Asociación Estratégica Global entre México – Japón en su Edición 54",
+      "fuente": "SECIHTI",
+      "url": "https://secihti.mx/convocatoria/becas-al-extranjero/estancias-tecnicas-en-japon/convocatorias-2026-becas-para-estancias-tecnicas-en-japon-asociacion-estrategica-global-entre-mexico-japon-en-su-edicion-54/",
+      "categoria": "Becas al extranjero",
+      "periodo": "2026",
+      "estatus": "Abierta",
+      "cierre": "25 Sep 2026",
+      "keywords": "",
+      "relevante": false,
+      "visto": "2026-07-25T00:00:12+00:00"
     },
     {
       "titulo": "Convocatoria Becas Nacionales para la Formación en CP-SECIHTI 2026",
