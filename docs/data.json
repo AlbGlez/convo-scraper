@@ -1,10 +1,10 @@
 {
-  "generado": "2026-08-17T12:00:22+00:00",
+  "generado": "2026-08-17T18:00:31+00:00",
   "totales": {
     "federal": 26,
-    "estatal": 10,
+    "estatal": 11,
     "federal_relevantes": 3,
-    "estatal_relevantes": 10
+    "estatal_relevantes": 11
   },
   "federal": [
     {
@@ -321,6 +321,18 @@
     }
   ],
   "estatal": [
+    {
+      "titulo": "Descargar la convocatoria",
+      "fuente": "UTEZ-becas",
+      "url": "https://www.utez.edu.mx/wp-content/uploads/2026/08/Convocatoria_Becas_Septiembre_Diciembre_2026.pdf",
+      "categoria": "",
+      "periodo": "",
+      "estatus": "",
+      "cierre": "",
+      "keywords": "",
+      "relevante": true,
+      "visto": "2026-08-17T18:00:30+00:00"
+    },
     {
       "titulo": "Abre CEMITT registro de proyectos científicos para impulsar soluciones estratégicas en Morelos •\tEste 22 de julio inicia el registro de proyectos de la convocatoria \"Soluciones Estratégicas para Morelos con Enfoque Humanístico, Científico y Tecnológico 2026\" •\tUniversidades, centros de investigación",
       "fuente": "CCyTEM-noticias",
