@@ -1,7 +1,7 @@
 {
-  "generado": "2026-08-28T18:00:34+00:00",
+  "generado": "2026-08-29T00:00:36+00:00",
   "totales": {
-    "federal": 26,
+    "federal": 27,
     "estatal": 11,
     "federal_relevantes": 3,
     "estatal_relevantes": 11
@@ -42,6 +42,18 @@
       "keywords": "inteligencia artificial",
       "relevante": true,
       "visto": "2026-07-03T22:44:55+00:00"
+    },
+    {
+      "titulo": "Convocatoria 2026 Apoyo Complementario SECIHTI-OEA",
+      "fuente": "SECIHTI",
+      "url": "https://secihti.mx/convocatoria/becas-nacionales/convocatoria-2026-apoyo-complementario-secihti-oea/",
+      "categoria": "Becas Nacionales",
+      "periodo": "2026",
+      "estatus": "Abierta",
+      "cierre": "",
+      "keywords": "",
+      "relevante": false,
+      "visto": "2026-08-29T00:00:09+00:00"
     },
     {
       "titulo": "Convocatorias 2026 Becas para Estancias Técnicas en Japón: Asociación Estratégica Global entre México – Japón en su Edición 54",
